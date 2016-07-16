@@ -1,6 +1,7 @@
 <?php 
 require_once('../db/db_connect.php');
 session_start();
+
 if(isset($_SESSION['privilage']))
 {
     if($_SESSION['privilage']!='superadmin' && $_SESSION['privilage']!='admin')
@@ -15,6 +16,31 @@ else
     exit();
 }
 
+function copyfiles($wname,$srcfile,$destfile)
+{
+    copy($srcfile,$destfile);
+    $var_str = var_export($wname, true);
+    $var = "<?php \$wname = $var_str; ?>\n\n";
+    $var.=file_get_contents($destfile);
+    file_put_contents($destfile, $var);
+    chmod($destfile, 33279);
+
+}
+function copyjs($wname,$srcfile,$destfile)
+{
+    copy($srcfile,$destfile);
+
+    $var_str = var_export($wname, true);
+    $var = "var wname = $var_str; \n\n";
+    $var.=file_get_contents($destfile);
+    file_put_contents($destfile, $var);
+    chmod($destfile, 33279);
+}
+function copyfileswo($wname,$srcfile,$destfile)
+{
+    copy($srcfile,$destfile);
+    chmod($destfile, fileperms($srcfile));
+}
 
 
 
@@ -62,16 +88,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
         echo "Successfully created website.<br>";
 
-        $srcfile='../templates/'.$tname.'/home.php';
-        $destfile='../Websites/'.$wname.'_index.php';
+        copyfiles($wname,'../templates/'.$tname.'/home.php','../Websites/'.$wname.'_index.php');
+        copyfiles($wname,'../templates/'.$tname.'/add_users.php','../Websites/'.$wname.'_adduser.php');
+        copyfiles($wname,'../templates/'.$tname.'/login_validate.php','../Websites/'.$wname.'_loginvalidiate.php');
+        copyfiles($wname,'../templates/'.$tname.'/login_form.php','../Websites/'.$wname.'_loginform.php');
+        copyfiles($wname,'../templates/'.$tname.'/getinfo.php','../Websites/'.$wname.'_getinfo.php');
+        copyjs($wname,'../templates/'.$tname.'/ajaxscripts.js','../Websites/'.$wname.'_ajaxscripts.js');
 
-        copy($srcfile,$destfile);
-        chmod($destfile, fileperms($srcfile));
-
-        $var_str = var_export($wname, true);
-        $var = "<?php \$wname = $var_str; ?>\n\n";
-        $var.=file_get_contents($destfile);
-        file_put_contents($destfile, $var);
 
         $db='website_'.$wname;
 
@@ -114,7 +137,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     {
                       if (!is_dir($dir+$file) && $file!='.' && $file!='..')
                       {
-                      echo '<li> &nbsp &nbsp <input type="radio" name="templatename" value="'.$file.'" /> <a TARGET="_Blank" href="'.$dir.$file.'/preview.php">'.$file.'</a><br></li>';
+                      echo '<li> &nbsp &nbsp <input type="radio" name="templatename" value="'.$file.'" required /> <a TARGET="_Blank" href="'.$dir.$file.'/preview.php">'.$file.'</a><br></li>';
                       }
                     }
                     echo '</ol>';
