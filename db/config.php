@@ -2,7 +2,9 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$db = "NIC_SiteCreator";
+
+if(!isset($db))
+	$db = "NIC_SiteCreator";
 
 $superadminpassword="nicpassword";
 

@@ -14,6 +14,16 @@ $query = $conn->prepare(" CREATE TABLE `Users` (
 $query->execute();
 
 
+if($db=='NIC_SiteCreator')
+{
+	$query = $conn->prepare(" CREATE TABLE `Websites` (
+							 `url` varchar(20) NOT NULL,
+							 `author` varchar(50) NOT NULL,
+							 `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+							 PRIMARY KEY (`url`)
+							)	");
+	$query->execute();
+}
 
 //Super Admin
 $query = $conn->prepare("SELECT * FROM Users WHERE username='superadmin' ");
