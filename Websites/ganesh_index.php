@@ -5,13 +5,28 @@ $db='website_'.$wname;
 require_once('../db/db_connect.php');
 session_start();
 
+    $dataquery = $conn->prepare("SELECT * FROM Data");
+    $dataquery->execute();
+    $dataresult=$dataquery->get_result();
+    $datarow=$dataresult->fetch_assoc();
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style type="text/css">
+   .carousel img {
+        margin: 0 auto;
+        max-height: 400px;
+        min-height: 300px;
+    }
+    .carousel{
+      background-color: #9ACD32;
+}
+</style>
   <script src=<?php echo '"'.$wname.'_'.'ajaxscripts.js"'; ?>></script>
-  <title id="title"></title>
+  <title><?php if($datarow["title"]!="None")echo $datarow["title"]; else echo $wname; ?></title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="home.css">
@@ -21,38 +36,165 @@ session_start();
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#"><?php echo $wname; ?></a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Page 1-1</a></li>
-            <li><a href="#">Page 1-2</a></li>
-            <li><a href="#">Page 1-3</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Page 2</a></li>
-        <li><a href="#">Page 3</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Page 4</a></li>
-        <li><a href="#">Page 5</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
 
+<?php 
+if($datarow["is_header"]==true)
+{
+
+$headerquery = $conn->prepare("SELECT * FROM Header where pos='l'  order by grp");
+$headerquery->execute();
+$headerresult=$headerquery->get_result();
+?>
+
+<nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><?php echo $wname; ?></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="<?php echo $wname.'_index.php'; ?>">Home</a></li>
+
+
+            <?php 
+
+            $grp='None';
+            $alreadyinloop=0;
+            while($headerrow=$headerresult->fetch_assoc())
+              {
+                  if($headerrow['grp']=='None')
+                  {
+                    if($alreadyinloop==1)
+                    {
+                        echo '
+                            </ul>
+                          </li>';
+                          $grp='None';
+                    }
+                    echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                  }
+                  else
+                  {
+                    if($alreadyinloop==0)
+                    {
+                      $alreadyinloop=1;
+                      $grp=$headerrow['grp'];
+                      echo ' <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$headerrow['grp'].'<span class="caret"></span></a>
+                    <ul class="dropdown-menu">';
+                    echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                    }
+                    else
+                    {
+                      if($grp==$headerrow['grp'])
+                      {
+                        echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                      }
+                      else
+                      {
+                        echo '
+                            </ul>
+                          </li>';
+                      $grp=$headerrow['grp'];
+                      echo ' <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$headerrow['grp'].'<span class="caret"></span></a>
+                    <ul class="dropdown-menu">';
+                    echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                      
+                      }
+                    }
+
+                  }
+                }
+                if($alreadyinloop==1)
+                  echo '</ul>';
+            
+            $headerquery = $conn->prepare("SELECT * FROM Header where pos='r' order by grp");
+            $headerquery->execute();
+            $headerresult=$headerquery->get_result();
+
+echo '</ul><ul class="nav navbar-nav navbar-right">';
+
+            $grp='None';
+            $alreadyinloop=0;
+            while($headerrow=$headerresult->fetch_assoc())
+              {
+                  if($headerrow['grp']=='None')
+                  {
+                    if($alreadyinloop==1)
+                    {
+                        echo '
+                            </ul>
+                          </li>';
+                          $grp='None';
+                    }
+                    echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                  }
+                  else
+                  {
+                    if($alreadyinloop==0)
+                    {
+                      $alreadyinloop=1;
+                      $grp=$headerrow['grp'];
+                      echo ' <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$headerrow['grp'].'<span class="caret"></span></a>
+                    <ul class="dropdown-menu">';
+                    echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                    }
+                    else
+                    {
+                      if($grp==$headerrow['grp'])
+                      {
+                        echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                      }
+                      else
+                      {
+                        echo '
+                            </ul>
+                          </li>';
+                      $grp=$headerrow['grp'];
+                      echo ' <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$headerrow['grp'].'<span class="caret"></span></a>
+                    <ul class="dropdown-menu">';
+                    echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
+                      
+                      }
+                    }
+
+                  }
+                }
+                if($alreadyinloop==1)
+                  echo '</ul>';
+
+              ?>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  <?php
+}
+?>
+
+
+
+
+
+
+
+<?php 
+if($datarow["is_imageslider"]==true)
+{
+
+$imagesliderquery = $conn->prepare("SELECT * FROM Image_slider");
+$imagesliderquery->execute();
+$imagesliderresult=$imagesliderquery->get_result();
+?>
+<div id="center">
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -62,23 +204,28 @@ session_start();
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
-      <div class="item active">
-        <img src="link to image" alt="Image">
-        <div class="carousel-caption">
-          <h3>Image 1</h3>
-          <p>Caption 1</p>
-        </div>
-      </div>
 
-      <div class="item">
-        <img src="http://placehold.it/1200x400?text=Another Image Maybe" alt="Image">
-        <div class="carousel-caption">
-          <h3>Image 2</h3>
-          <p>Caption 2</p>
-        </div>
-      </div>
-    </div>
 
+            <?php 
+            $ac=0;
+              while($imagesliderrow=$imagesliderresult->fetch_assoc())
+              {
+              echo '<div class="item';
+              if($ac==0)
+              {
+                echo ' active';
+                $ac=1;
+              }
+              echo '">
+        <img class="centered-image" src="'.$imagesliderrow['link'].'" alt="'.$imagesliderrow['alt'].'">
+        <div class="carousel-caption">
+          <h3><font color="'.$imagesliderrow['captioncolor'].'">'.$imagesliderrow['caption'].'</font></h3>
+        </div>
+      </div>';
+             }
+?>
+
+</div>
     <!-- Left and right controls -->
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -89,28 +236,54 @@ session_start();
       <span class="sr-only">Next</span>
     </a>
 </div>
-  
+</div>
+
+<?php
+}
+?>
+
+      
 <div class="container text-center">
+
+<?php 
+if($datarow["is_heading"]==true)
+{
+?>
   <h3>Heading</h3><br>
-  <div class="row">
-    <div class="col-sm-2">
-      <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Text</p>
-    </div>
-    <div class="col-sm-8">
-      <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Text</p>
-    </div>
-    <div class="col-sm-2">
-      <div class="well">
-       <p>Text</p>
-      </div>
-      <div class="well">
-       <p>Text</p>
-      </div>
-    </div>
-  </div>
-</div><br>
+<?php
+}
+$rowquery = $conn->prepare("SELECT * FROM Body_Rows");
+$rowquery->execute();
+$rowresult=$rowquery->get_result();
+while($rowrow=$rowresult->fetch_assoc())
+{
+  echo '<div class="row" id="'.$rowrow["id"].'">';
+  $colquery = $conn->prepare("SELECT * FROM Body_Columns where row_id=?");
+  $colquery->bind_param("d", $rowrow["id"]);
+  $colquery->execute();
+  $colresult=$colquery->get_result();
+  while($colrow=$colresult->fetch_assoc())
+  {
+    echo '<div class="well col-sm-'.$colrow['length'].'">';
+
+    $datquery = $conn->prepare("SELECT * FROM Body_Data where row_id=? and col_id=?");
+    $datquery->bind_param("dd", $rowrow["id"],$colrow["id"]);
+    $datquery->execute();
+    $datresult=$datquery->get_result();
+    while($datrow=$datresult->fetch_assoc())
+    {
+      echo $datrow["text"].'<br>';
+    }
+
+
+    echo '</div>';
+  }
+  echo '</div>';
+}
+?>
+
+
+<br>
 
 <footer class="container-fluid text-center">
   <p>Footer Text</p>

@@ -1,6 +1,6 @@
 <?php
 
-$query = $conn->prepare(" CREATE TABLE `Users` (
+$query = $conn->prepare(" CREATE TABLE IF NOT EXISTS `Users` (
 							 `user_id` int(11) NOT NULL AUTO_INCREMENT,
 							 `username` varchar(50) NOT NULL,
 							 `privilage` enum('superadmin','admin','i','d','u','id','du','iu','idu') NOT NULL DEFAULT 'idu',
@@ -16,7 +16,7 @@ $query->execute();
 
 if($db=='NIC_SiteCreator')
 {
-	$query = $conn->prepare(" CREATE TABLE `Websites` (
+	$query = $conn->prepare(" CREATE TABLE IF NOT EXISTS `Websites` (
 							 `url` varchar(20) NOT NULL,
 							 `author` varchar(50) NOT NULL,
 							 `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -24,6 +24,28 @@ if($db=='NIC_SiteCreator')
 							)	");
 	$query->execute();
 }
+
+if($db!='NIC_SiteCreator')
+{
+	$query = $conn->prepare(" CREATE TABLE IF NOT EXISTS `Data` (
+							 `title` varchar(50) NOT NULL
+							)	");
+	$query->execute();
+
+	$query = $conn->prepare("SELECT * FROM Data");
+	$query->execute();
+	$result=$query->get_result();
+	$row=$result->fetch_assoc();
+
+	if(sizeof($row)==0)
+	{
+	$query = $conn->prepare(" INSERT INTO `Data` () VALUES()	");
+	$query->execute();
+	}
+}
+
+
+
 
 //Super Admin
 $query = $conn->prepare("SELECT * FROM Users WHERE username='superadmin' ");

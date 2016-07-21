@@ -23,6 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		$_SESSION['username']=$row['username'];
 		$_SESSION['privilage']=$row['privilage'];
+		echo "Login Successfull.<br>";
 	}
 }
 ?>

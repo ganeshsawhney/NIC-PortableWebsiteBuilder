@@ -9,7 +9,7 @@ session_start();
 
 <?php
     $q = mysqli_real_escape_string($conn,$_GET['q']);
-    if($q=='title')
+    if($q == 'title')
     {
         $query = $conn->prepare("SELECT title FROM Data");
         $query->execute();

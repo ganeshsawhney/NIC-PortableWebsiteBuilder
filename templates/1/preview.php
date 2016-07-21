@@ -53,7 +53,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
       <div class="item active">
-        <img src="link to image" alt="Image">
+        <img src="http://www.w3schools.com/images/w3cert.gif" alt="Image">
         <div class="carousel-caption">
           <h3>Image 1</h3>
           <p>Caption 1</p>
@@ -61,7 +61,7 @@
       </div>
 
       <div class="item">
-        <img src="http://placehold.it/1200x400?text=Another Image Maybe" alt="Image">
+        <img src="http://www.w3schools.com/images/w3cert.gif" alt="Image">
         <div class="carousel-caption">
           <h3>Image 2</h3>
           <p>Caption 2</p>
