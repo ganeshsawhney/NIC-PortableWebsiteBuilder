@@ -90,7 +90,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         copyfiles($wname,'../templates/'.$tname.'/home.php','../Websites/'.$wname.'_index.php');
         copyfiles($wname,'../templates/'.$tname.'/add_users.php','../Websites/'.$wname.'_adduser.php');
-        copyfiles($wname,'../templates/'.$tname.'/login_validate.php','../Websites/'.$wname.'_loginvalidiate.php');
+        copyfiles($wname,'../templates/'.$tname.'/login_validate.php','../Websites/'.$wname.'_loginvalidate.php');
         copyfiles($wname,'../templates/'.$tname.'/login_form.php','../Websites/'.$wname.'_loginform.php');
         copyfiles($wname,'../templates/'.$tname.'/getinfo.php','../Websites/'.$wname.'_getinfo.php');
         copyjs($wname,'../templates/'.$tname.'/ajaxscripts.js','../Websites/'.$wname.'_ajaxscripts.js');

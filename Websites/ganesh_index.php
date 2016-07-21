@@ -71,6 +71,7 @@ $headerresult=$headerquery->get_result();
                   {
                     if($alreadyinloop==1)
                     {
+                      $alreadyinloop=0;
                         echo '
                             </ul>
                           </li>';
@@ -112,7 +113,7 @@ $headerresult=$headerquery->get_result();
                   }
                 }
                 if($alreadyinloop==1)
-                  echo '</ul>';
+                  echo '</ul></li>';
             
             $headerquery = $conn->prepare("SELECT * FROM Header where pos='r' order by grp");
             $headerquery->execute();
@@ -128,6 +129,7 @@ echo '</ul><ul class="nav navbar-nav navbar-right">';
                   {
                     if($alreadyinloop==1)
                     {
+                      $alreadyinloop=0;
                         echo '
                             </ul>
                           </li>';
@@ -162,7 +164,7 @@ echo '</ul><ul class="nav navbar-nav navbar-right">';
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$headerrow['grp'].'<span class="caret"></span></a>
                     <ul class="dropdown-menu">';
                     echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
-                      
+                                          
                       }
                     }
 
@@ -246,12 +248,7 @@ $imagesliderresult=$imagesliderquery->get_result();
 <div class="container text-center">
 
 <?php 
-if($datarow["is_heading"]==true)
-{
-?>
-  <h3>Heading</h3><br>
-<?php
-}
+
 $rowquery = $conn->prepare("SELECT * FROM Body_Rows");
 $rowquery->execute();
 $rowresult=$rowquery->get_result();
@@ -285,9 +282,9 @@ while($rowrow=$rowresult->fetch_assoc())
 
 <br>
 
-<footer class="container-fluid text-center">
+<!-- <footer class="container-fluid text-center">
   <p>Footer Text</p>
-</footer>
+</footer> -->
 
 </body>
 </html>
