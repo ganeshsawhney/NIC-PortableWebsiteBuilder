@@ -1,3 +1,10 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
 <?php 
 require_once('../db/db_connect.php');
 session_start();
@@ -6,13 +13,13 @@ if(isset($_SESSION['privilage']))
 {
     if($_SESSION['privilage']!='superadmin' && $_SESSION['privilage']!='admin')
     {
-        echo "Insufficient Privilages.<br>";
+        echo "<h2>Insufficient Privilages.</h2><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
         exit();
     }
 }
 else
 {
-    echo "Insufficient Privilages.<br>";
+    echo "<h2>Insufficient Privilages.</h2><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
     exit();
 }
 
@@ -120,11 +127,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 ?>
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="select_template.css">
-</head>
 
 <body>
 
@@ -147,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                     {
                       if (!is_dir($dir+$file) && $file!='.' && $file!='..')
                       {
-                      echo '<li> &nbsp &nbsp <input type="radio" name="templatename" value="'.$file.'" required /> <a TARGET="_Blank" href="'.$dir.$file.'/preview.php">'.$file.'</a><br></li>';
+                      echo '<li> &nbsp &nbsp <input type="radio" name="templatename" value="'.$file.'" required /> <a TARGET="_Blank" href="'.$dir.$file.'/preview.php"> (Preview)'.$file.'</a><br></li>';
                       }
                     }
                     echo '</ol>';

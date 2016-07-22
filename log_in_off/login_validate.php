@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
 <?php 
 require_once('../db/db_connect.php');
 session_start();
@@ -17,13 +22,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if(sizeof($row)==0)
     {
-		echo "Username or Password is invalid";
+		echo "<h2>Username or Password is invalid.</h2><br> <a class='btn btn-info' role='button'  href='login_form.php'>Login Again</a><br><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a>";
 	}
 	else
 	{
 		$_SESSION['username']=$row['username'];
 		$_SESSION['privilage']=$row['privilage'];
-		echo "Login Successfull.<br>";
+		echo "<h2>Login Successfull.</h2><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a>";
 	}
 }
 ?>

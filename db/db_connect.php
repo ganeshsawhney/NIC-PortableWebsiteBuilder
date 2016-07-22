@@ -24,11 +24,11 @@ if(!$db_exists)
 	if(!$success) 
 	{
 		die("Database does not exist and we were not able to create it.<br>");
-	}
+	}/*
 	else
 	{
 		echo "Database was not present. So we created it for you.<br>";
-	}
+	}*/
 
 	$conn->select_db($db);
 }

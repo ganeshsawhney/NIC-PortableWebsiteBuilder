@@ -144,7 +144,7 @@ if(sizeof($row)==0)
 		printf("SuperAdmin creation failed: %s.\n", $conn->error);
 		exit();
 	}
-	echo "No SuperAdmin found, so we created one. <br>";
+	//echo "No SuperAdmin found, so we created one. <br>";
 }
 
 ?>
