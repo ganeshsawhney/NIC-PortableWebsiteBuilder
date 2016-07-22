@@ -1,7 +1,22 @@
+<?php $wname = 'ganesh'; ?>
+
 <?php 
 $db='website_'.$wname;
-require_once('../../db/db_connect.php');
+require_once('../db/db_connect.php');
 session_start();
+if(isset($_SESSION['privilage']))
+{
+    if($_SESSION['privilage']!='superadmin' && $_SESSION['privilage']!='admin')
+    {
+        echo "Insufficient Privilages.<br>";
+        exit();
+    }
+}
+else
+{
+    echo "Insufficient Privilages.<br>";
+    exit();
+}
 
     $dataquery = $conn->prepare("SELECT * FROM Data");
     $dataquery->execute();
@@ -23,7 +38,6 @@ session_start();
       background-color: #9ACD32;
 }
 </style>
-  <script src=<?php echo '"'.$wname.'_'.'ajaxscripts.js"'; ?>></script>
   <title><?php if($datarow["title"]!="None")echo $datarow["title"]; else echo $wname; ?></title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,19 +45,29 @@ session_start();
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src=<?php echo '"'.$wname.'_'.'ajaxscripts.js"'; ?>></script>
 </head>
 <body>
-
+<div id="loading" class="text-center" style="background-color:Aquamarine;">
+</div>
+<div id="showupdatevalues">
+</div>
 
 <?php 
 if($datarow["is_header"]==true)
 {
 
-$headerquery = $conn->prepare("SELECT * FROM Header where pos='l'  order by grp");
+$headerquery = $conn->prepare("SELECT * FROM Header where pos='l' order by grp ");
 $headerquery->execute();
 $headerresult=$headerquery->get_result();
 ?>
-
+<label>Title of Page: </label>
+<input id="pagetitle" type="text" name="pagetitle" value=
+<?php if($datarow["title"]!="None") echo '"'.$datarow["title"].'"'; else echo '"'.$wname.'"'; ?> >
+<br>
+<button class="btn btn-info btn-xs" id="removeheader">Remove Header</button>
+<button class="btn btn-info btn-xs" id="changeheader">Change Header</button>
+<button class="btn btn-info btn-xs" id="enableaddheader">Add Header Node</button>
 <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -162,7 +186,7 @@ echo '</ul><ul class="nav navbar-nav navbar-right">';
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">'.$headerrow['grp'].'<span class="caret"></span></a>
                     <ul class="dropdown-menu">';
                     echo '<li><a href="'.$headerrow['link'].'">'.$headerrow['name'].'</a></li>';
-                                          
+                                       
                       }
                     }
 
@@ -178,9 +202,15 @@ echo '</ul><ul class="nav navbar-nav navbar-right">';
     </nav>
   <?php
 }
+else
+{
 ?>
+<button class="btn btn-info btn-xs" id="addheader">Add Header</button>
+<br>
 
-
+<?php
+}
+?>
 
 
 
@@ -196,8 +226,12 @@ $imagesliderresult=$imagesliderquery->get_result();
 $temp = $conn->prepare("SELECT COUNT(*) FROM Image_slider");
 $temp->execute();
 $temp=$temp->get_result();
-$temp=$temp->fetch_assoc()
+$temp=$temp->fetch_assoc();
 ?>
+
+<button class="btn btn-info btn-xs" id="removeimageslider">Remove ImageSlider</button>
+<button class="btn btn-info btn-xs" id="changeimageslider">Change ImageSlider</button>
+<button class="btn btn-info btn-xs" id="enableimageslider">Add ImageSlider's Image</button>
 
 <div id="center">
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -241,11 +275,13 @@ $temp=$temp->fetch_assoc()
 ?>
 
 </div>
-        <?php
+    <!-- Left and right controls -->
+    
+    <?php
     if($temp['COUNT(*)']>0)
 {
-  ?><!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+  ?>
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
@@ -253,7 +289,7 @@ $temp=$temp->fetch_assoc()
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
-        <?php
+    <?php
   }
   ?>
 </div>
@@ -261,10 +297,19 @@ $temp=$temp->fetch_assoc()
 
 <?php
 }
+else
+{
 ?>
+<button class="btn btn-info btn-xs" id="addimageslider">Add ImageSlider</button>
+<br>
 
+<?php
+}
+?>
+<br>
       
 <div class="container text-center">
+<button class="btn btn-info btn-xs" id="changebody">Change Body/Add Row/Column</button>
 
 <?php 
 
@@ -288,9 +333,12 @@ while($rowrow=$rowresult->fetch_assoc())
     $datresult=$datquery->get_result();
     while($datrow=$datresult->fetch_assoc())
     {
-      echo $datrow["text"].'<br>';
+      echo '<mark>'.$datrow["text"].'</mark>';
+    echo '<button class="deletedata btn btn-danger btn-xs" type="button" id="'.$datrow['id'].'">Delete</button>';
+    echo '<br><br>';
     }
 
+    echo '<button class="adddata btn btn-info btn-xs" type="button" id="'.$colrow['id'].'">Add Data</button>';
 
     echo '</div>';
   }

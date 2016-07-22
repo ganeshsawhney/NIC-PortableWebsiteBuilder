@@ -8,7 +8,7 @@
 
     <div class="login-block">
         <h1>Login</h1>
-        <form method="post" action="login_validate.php" name="loginform" role="form">
+        <form method="post" action=<?php echo '"'.$wname.'_loginvalidate.php"'; ?> name="loginform" role="form">
             <div class="form-group">
                 <label for="username">UserName:</label>
                 <input type="text" class="form-control" name="username">

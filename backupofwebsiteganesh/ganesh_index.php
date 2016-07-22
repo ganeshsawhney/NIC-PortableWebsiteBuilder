@@ -195,13 +195,28 @@ if($datarow["is_imageslider"]==true)
 $imagesliderquery = $conn->prepare("SELECT * FROM Image_slider");
 $imagesliderquery->execute();
 $imagesliderresult=$imagesliderquery->get_result();
+$temp = $conn->prepare("SELECT COUNT(*) FROM Image_slider");
+$temp->execute();
+$temp=$temp->get_result();
+$temp=$temp->fetch_assoc()
 ?>
+
 <div id="center">
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <?php 
+      $cntt=1;
+      $cnttt=$temp['COUNT(*)'];
+      while($cnttt>1)
+      {
+      echo '<li data-target="#myCarousel" data-slide-to="'.$cntt.'"></li>';
+      $cnttt--;
+      $cntt++;
+    }
+    ?>
+
     </ol>
 
     <!-- Wrapper for slides -->
@@ -228,7 +243,10 @@ $imagesliderresult=$imagesliderquery->get_result();
 ?>
 
 </div>
-    <!-- Left and right controls -->
+        <?php
+    if($temp['COUNT(*)']>0)
+{
+  ?><!-- Left and right controls -->
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
@@ -237,6 +255,9 @@ $imagesliderresult=$imagesliderquery->get_result();
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
+        <?php
+  }
+  ?>
 </div>
 </div>
 

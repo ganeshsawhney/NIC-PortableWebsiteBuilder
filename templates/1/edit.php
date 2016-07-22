@@ -2,7 +2,7 @@
 
 <?php 
 $db='website_'.$wname;
-require_once('../db/db_connect.php');
+require_once('../../db/db_connect.php');
 session_start();
 if(isset($_SESSION['privilage']))
 {
@@ -61,6 +61,10 @@ $headerquery = $conn->prepare("SELECT * FROM Header where pos='l' order by grp "
 $headerquery->execute();
 $headerresult=$headerquery->get_result();
 ?>
+<label>Title of Page: </label>
+<input id="pagetitle" type="text" name="pagetitle" value=
+<?php if($datarow["title"]!="None") echo '"'.$datarow["title"].'"'; else echo '"'.$wname.'"'; ?> >
+<br>
 <button class="btn btn-info btn-xs" id="removeheader">Remove Header</button>
 <button class="btn btn-info btn-xs" id="changeheader">Change Header</button>
 <button class="btn btn-info btn-xs" id="enableaddheader">Add Header Node</button>
@@ -208,10 +212,6 @@ else
 }
 ?>
 
-<label>Title of Page: </label>
-<input id="pagetitle" type="text" name="pagetitle" value=
-<?php if($datarow["title"]!="None") echo '"'.$datarow["title"].'"'; else echo '"'.$wname.'"'; ?> >
-<br><br>
 
 
 
@@ -223,13 +223,32 @@ if($datarow["is_imageslider"]==true)
 $imagesliderquery = $conn->prepare("SELECT * FROM Image_slider");
 $imagesliderquery->execute();
 $imagesliderresult=$imagesliderquery->get_result();
+$temp = $conn->prepare("SELECT COUNT(*) FROM Image_slider");
+$temp->execute();
+$temp=$temp->get_result();
+$temp=$temp->fetch_assoc();
 ?>
+
+<button class="btn btn-info btn-xs" id="removeimageslider">Remove ImageSlider</button>
+<button class="btn btn-info btn-xs" id="changeimageslider">Change ImageSlider</button>
+<button class="btn btn-info btn-xs" id="enableimageslider">Add ImageSlider's Image</button>
+
 <div id="center">
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <?php 
+      $cntt=1;
+      $cnttt=$temp['COUNT(*)'];
+      while($cnttt>1)
+      {
+      echo '<li data-target="#myCarousel" data-slide-to="'.$cntt.'"></li>';
+      $cnttt--;
+      $cntt++;
+    }
+    ?>
+
     </ol>
 
     <!-- Wrapper for slides -->
@@ -257,7 +276,12 @@ $imagesliderresult=$imagesliderquery->get_result();
 
 </div>
     <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    
+    <?php
+    if($temp['COUNT(*)']>0)
+{
+  ?>
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
@@ -265,15 +289,27 @@ $imagesliderresult=$imagesliderquery->get_result();
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
+    <?php
+  }
+  ?>
 </div>
 </div>
 
 <?php
 }
+else
+{
 ?>
+<button class="btn btn-info btn-xs" id="addimageslider">Add ImageSlider</button>
+<br>
 
+<?php
+}
+?>
+<br>
       
 <div class="container text-center">
+<button class="btn btn-info btn-xs" id="changebody">Change Body/Add Row/Column</button>
 
 <?php 
 
@@ -297,9 +333,12 @@ while($rowrow=$rowresult->fetch_assoc())
     $datresult=$datquery->get_result();
     while($datrow=$datresult->fetch_assoc())
     {
-      echo $datrow["text"].'<br>';
+      echo '<mark>'.$datrow["text"].'</mark>';
+    echo '<button class="deletedata btn btn-danger btn-xs" type="button" id="'.$datrow['id'].'">Delete</button>';
+    echo '<br><br>';
     }
 
+    echo '<button class="adddata btn btn-info btn-xs" type="button" id="'.$colrow['id'].'">Add Data</button>';
 
     echo '</div>';
   }

@@ -27,9 +27,14 @@ if($db=='NIC_SiteCreator')
 
 if($db!='NIC_SiteCreator')
 {
-	$query = $conn->prepare(" CREATE TABLE IF NOT EXISTS `Data` (
-							 `title` varchar(50) NOT NULL
-							)	");
+	$query = $conn->prepare(" CREATE TABLE `Data` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `title` varchar(50) NOT NULL DEFAULT 'None',
+ `is_header` tinyint(1) NOT NULL DEFAULT '0',
+ `is_imageslider` tinyint(1) NOT NULL DEFAULT '0',
+ `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+)	");
 	$query->execute();
 
 	$query = $conn->prepare("SELECT * FROM Data");
@@ -42,6 +47,73 @@ if($db!='NIC_SiteCreator')
 	$query = $conn->prepare(" INSERT INTO `Data` () VALUES()	");
 	$query->execute();
 	}
+
+	
+	$query = $conn->prepare(" CREATE TABLE `Body_Columns` (
+								 `id` int(11) NOT NULL AUTO_INCREMENT,
+								 `name` varchar(20) NOT NULL DEFAULT '',
+								 `length` int(11) NOT NULL DEFAULT '1',
+								 `row_id` int(11) NOT NULL,
+								 `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+								 PRIMARY KEY (`id`)
+								)	");
+	$query->execute();
+	
+	$query = $conn->prepare(" CREATE TABLE `Body_Data` (
+								 `id` int(11) NOT NULL AUTO_INCREMENT,
+								 `text` text NOT NULL,
+								 `row_id` int(11) NOT NULL,
+								 `col_id` int(11) NOT NULL,
+								 `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+								 PRIMARY KEY (`id`)
+								)	");
+	$query->execute();	
+	$query = $conn->prepare(" CREATE TABLE `Body_Data` (
+								 `id` int(11) NOT NULL AUTO_INCREMENT,
+								 `text` text NOT NULL,
+								 `row_id` int(11) NOT NULL,
+								 `col_id` int(11) NOT NULL,
+								 `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+								 PRIMARY KEY (`id`)
+								)	");
+	
+	$query->execute();	
+	$query = $conn->prepare(" CREATE TABLE `Body_Rows` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `name` varchar(20) NOT NULL DEFAULT '',
+ `length` int(11) NOT NULL DEFAULT '1',
+ `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+)	");
+	$query->execute();	
+
+
+	$query->execute();	
+	$query = $conn->prepare(" CREATE TABLE `Header` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `name` varchar(20) NOT NULL,
+ `link` varchar(20) NOT NULL DEFAULT '#',
+ `grp` varchar(20) NOT NULL DEFAULT 'None',
+ `pos` char(2) NOT NULL DEFAULT 'l',
+ `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`),
+ KEY `grp` (`grp`)
+)	");
+	$query->execute();
+
+
+	$query->execute();	
+	$query = $conn->prepare(" CREATE TABLE `Image_slider` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `alt` varchar(20) NOT NULL,
+ `link` varchar(200) NOT NULL,
+ `caption` text NOT NULL,
+ `captioncolor` varchar(8) NOT NULL DEFAULT 'black',
+ `datecreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (`id`)
+)	");
+	$query->execute();
+
 }
 
 

@@ -39,7 +39,7 @@ function copyjs($wname,$srcfile,$destfile)
 function copyfileswo($wname,$srcfile,$destfile)
 {
     copy($srcfile,$destfile);
-    chmod($destfile, fileperms($srcfile));
+    chmod($destfile, 33279);
 }
 
 
@@ -88,12 +88,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
         echo "Successfully created website.<br>";
 
-        copyfiles($wname,'../templates/'.$tname.'/home.php','../Websites/'.$wname.'_index.php');
-        copyfiles($wname,'../templates/'.$tname.'/add_users.php','../Websites/'.$wname.'_adduser.php');
-        copyfiles($wname,'../templates/'.$tname.'/login_validate.php','../Websites/'.$wname.'_loginvalidate.php');
-        copyfiles($wname,'../templates/'.$tname.'/login_form.php','../Websites/'.$wname.'_loginform.php');
-        copyfiles($wname,'../templates/'.$tname.'/getinfo.php','../Websites/'.$wname.'_getinfo.php');
-        copyjs($wname,'../templates/'.$tname.'/ajaxscripts.js','../Websites/'.$wname.'_ajaxscripts.js');
+
+        $target_dir = '../Websites/'.$wname;
+        if (!is_dir($target_dir))
+        {
+            mkdir($target_dir, 0777, true);
+            chmod($target_dir, 33279);
+        }
+
+        copyfiles($wname,'../templates/'.$tname.'/home.php','../Websites/'.$wname.'/'.$wname.'_index.php');
+        copyfiles($wname,'../templates/'.$tname.'/edit.php','../Websites/'.$wname.'/'.$wname.'_edit.php');
+        copyfiles($wname,'../templates/'.$tname.'/update.php','../Websites/'.$wname.'/'.$wname.'_update.php');
+        copyfiles($wname,'../templates/'.$tname.'/adduser.php','../Websites/'.$wname.'/'.$wname.'_adduser.php');
+        copyfiles($wname,'../templates/'.$tname.'/loginvalidate.php','../Websites/'.$wname.'/'.$wname.'_loginvalidate.php');
+        copyfiles($wname,'../templates/'.$tname.'/loginform.php','../Websites/'.$wname.'/'.$wname.'_loginform.php');
+        copyjs($wname,'../templates/'.$tname.'/ajaxscripts.js','../Websites/'.$wname.'/'.$wname.'_ajaxscripts.js');
+        copyfileswo($wname,'../templates/'.$tname.'/css.css','../Websites/'.$wname.'/'.$wname.'_css.css');
 
 
         $db='website_'.$wname;
