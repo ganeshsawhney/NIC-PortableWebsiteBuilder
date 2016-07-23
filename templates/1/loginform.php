@@ -1,11 +1,14 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="login_form.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
-
 <body>
 
+<?php 
+echo "<a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>";
+?>
     <div class="login-block">
         <h1>Login</h1>
         <form method="post" action=<?php echo '"'.$wname.'_loginvalidate.php"'; ?> name="loginform" role="form">

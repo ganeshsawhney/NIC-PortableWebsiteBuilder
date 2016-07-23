@@ -212,7 +212,7 @@ $imagesliderresult=$imagesliderquery->get_result();
 		echo '<tr>';
 		echo '<td><button class="btn btn-danger btn-xs deleteimagesliderrow"  id="'.$imagesliderrow['id'].'" >DEL</button></td>';
 		echo '<td><input type="text" class="form-control "  id="'.$imagesliderrow['id'].'" value="'.$imagesliderrow['link'].'" disabled></td>';
-		echo '<td><a href="'.$imagesliderrow['link'].'"> <span class="glyphicon glyphicon-open"></span> </a></td>';
+		echo '<td><a target="_blank" href="'.$imagesliderrow['link'].'"> <span class="glyphicon glyphicon-open"></span> </a></td>';
 		echo '<td><input type="text" class="form-control "  id="'.$imagesliderrow['id'].'" value="'.$imagesliderrow['caption'].'" disabled></td>';
 		echo '<td><input type="text" class="form-control "  id="'.$imagesliderrow['id'].'" value="'.$imagesliderrow['captioncolor'].'" disabled></td>';
 		echo '<td><input type="text" class="form-control "  id="'.$imagesliderrow['id'].'" value="'.$imagesliderrow['alt'].'" disabled></td>';

@@ -59,7 +59,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if(!is_dir('../templates/'.$tname) || !(ctype_alnum($wname)))
     {
-      echo "Wrong Template / Not ALPHANUMERIC website name.<br>";
+      echo "<h2>Wrong Template / Not ALPHANUMERIC website name.</h2><br> <a class='btn btn-info' role='button' href='select_template.php'>Create Website</a><br>
+</h2><br><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
       exit();
     }
 
@@ -71,7 +72,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if(sizeof($row)>0)
     {
-        echo "Website already exists.<br>";
+        echo "<h2>Website already exists.</h2><br> <a class='btn btn-info' role='button' href='select_template.php'>Create Website</a><br>
+</h2><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
         exit();
     }
     else
@@ -82,7 +84,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     
         if(!($query))
         {
-            echo "Website creation failed.<br>";
+            echo "<h2>Website creation failed.</h2><br> <a class='btn btn-info' role='button' href='select_template.php'>Create Website</a><br>
+</h2><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
             exit();
         }
         $query->bind_param("ss", $wname,$username);
@@ -90,12 +93,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         if(!($query))
         {
-            printf("Website creation failed: %s.\n", $conn->error);
+            printf("<h2>Website creation failed: %s.</h2><br> <a class='btn btn-info' role='button' href='select_template.php'>Create Website</a><br>
+</h2><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>", $conn->error);
             exit();
         }
-        echo "Successfully created website.<br>";
+        echo "<h2>Successfully created website.</h2><br> <a class='btn btn-info' role='button' href='../Websites/".$wname."/index.php"."'>Visit Website</a><br> <a class='btn btn-info' role='button' href='select_template.php'>Create Website</a><br>
+</h2><br> <br><a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
 
 
+        $target_dir = '../Websites';
+        if (!is_dir($target_dir))
+        {
+            mkdir($target_dir, 0777, true);
+            chmod($target_dir, 33279);
+        }
         $target_dir = '../Websites/'.$wname;
         if (!is_dir($target_dir))
         {
@@ -103,6 +114,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             chmod($target_dir, 33279);
         }
 
+        copyfiles($wname,'../templates/'.$tname.'/index.php','../Websites/'.$wname.'/index.php');
         copyfiles($wname,'../templates/'.$tname.'/home.php','../Websites/'.$wname.'/'.$wname.'_index.php');
         copyfiles($wname,'../templates/'.$tname.'/edit.php','../Websites/'.$wname.'/'.$wname.'_edit.php');
         copyfiles($wname,'../templates/'.$tname.'/update.php','../Websites/'.$wname.'/'.$wname.'_update.php');
@@ -120,7 +132,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         if(!$success) 
         {
-          die("Database for this website could not be created.<br>");
+          die("<h2>Database for this website could not be created.</h2><br> <a class='btn btn-info' role='button' href='select_template.php'>Create Website</a><br>
+</h2><br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>");
         }
     }
 }

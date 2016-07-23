@@ -6,6 +6,9 @@
 
 <body>
 
+<?php 
+echo "<br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
+?>
     <div class="login-block">
         <h1>Login</h1>
         <form method="post" action="login_validate.php" name="loginform" role="form">

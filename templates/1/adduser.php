@@ -6,6 +6,7 @@
 </head>
 
 <?php 
+echo "<a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>";
 $db='website_'.$wname;
 require_once('../../db/db_connect.php');
 session_start();
@@ -13,13 +14,13 @@ if(isset($_SESSION['privilage']))
 {
     if($_SESSION['privilage']!='superadmin' && $_SESSION['privilage']!='admin')
     {
-        echo "Insufficient Privilages.<br>";
+        echo "<h2>Insufficient Privilages.</h2><br> <a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>";
         exit();
     }
 }
 else
 {
-    echo "Insufficient Privilages.<br>";
+    echo "<h2>Insufficient Privilages.</h2><br> <a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>";
     exit();
 }
 
@@ -39,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if(sizeof($row)>0)
     {
-        echo "Username already exists.<br>";
+        echo "<h2>Username already exists.</h2><br> <a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>";
     }
     else
     {
@@ -55,7 +56,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     
         if(!($query))
         {
-            echo "User creation failed.<br>";
+            echo "<h2>User creation failed.</h2><br> <a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>";
             exit();
         }
         $query->bind_param("sssssd", $username,$privilage,$passhash,$firstname,$lastname,$contact);
@@ -63,10 +64,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         if(!($query))
         {
-            printf("User creation failed: %s.\n", $conn->error);
+            printf("<h2>User creation failed: %s.</h2><br> <a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>", $conn->error);
             exit();
         }
-        echo "Successfully added user.<br>";
+        echo "<h2>Successfully added user.</h2><br> <a class='btn btn-info' role='button' href='index.php'>Home Page</a><br>";
     }
 
 }

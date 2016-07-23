@@ -11,10 +11,10 @@
 </head>
 <body>
 <br><br>
-<a class='btn btn-info' role='button' href="log_in_off/login_form.php"> Login </a> 
+<a class='btn btn-info' role='button' href=<?php echo '"'.$wname.'_loginform.php"'; ?> > Login </a> 
 <br><br>
-<a class='btn btn-info' role='button' href="utilities/add_users.php"> Add User </a> 
+<a class='btn btn-info' role='button' href=<?php echo '"'.$wname.'_adduser.php"'; ?>> Add User </a> 
 <br><br>
-<a class='btn btn-info' role='button' href="utilities/select_template.php"> Create Website </a> 
+<a class='btn btn-info' role='button' href=<?php echo '"'.$wname.'_index.php"'; ?>> Visit Website </a> 
 <br><br>
-<a class='btn btn-info' role='button' href="utilities/delete_website.php"> Delete Website </a> 
+<a class='btn btn-info' role='button' href=<?php echo '"'.$wname.'_edit.php"'; ?>> Edit Website </a> 

@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
 <?php 
 require_once('../db/db_connect.php');
 session_start();
@@ -64,14 +69,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 }
 ?>
 
-
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-</head>
-
 <body>
+<?php 
+echo "<br> <a class='btn btn-info' role='button' href='../index.php'>Home Page</a><br>";
+?>
 
     <div class="addusers-block">
         <h1>Add-User</h1>
